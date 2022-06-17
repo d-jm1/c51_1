@@ -1,0 +1,73 @@
+A51 MACRO ASSEMBLER  A                                                                    06/17/2022 14:44:46 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02
+OBJECT MODULE PLACED IN a.OBJ
+ASSEMBLER INVOKED BY: F:\Program Files (x86)\keil\C51\BIN\A51.EXE a.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+0100                   1     ORG 100H
+0100                   2      START:
+0100 900133            3             MOV DPTR,#TAB1
+0103 7C07              4             MOV R4,#7
+0105 211E              5            AJMP LOOP
+0107                   6     KEY:
+0107 75A003            7         MOV P2,#3H
+010A 20A008            8         JB P2.0,FZ1
+010D BC0702            9        CJNE R4,#7,LOOPZ
+0110 7CFF             10        MOV R4,#0FFH
+0112                  11     LOOPZ:
+0112 0C               12         INC R4
+0113 211E             13         AJMP LOOP
+0115                  14     FZ1:
+0115 20A1EF           15         JB P2.1,KEY
+0118 BC0002           16         CJNE R4,#0H,LOOPF
+011B 7C08             17        MOV R4,#08H
+011D                  18     LOOPF:
+011D 1C               19         DEC R4
+011E                  20     LOOP:
+011E EC               21         MOV A,R4
+011F 93               22         MOVC A,@A+DPTR
+0120 F590             23        MOV P1,A
+0122 3126             24        ACALL DELAY
+0124 2107             25        AJMP KEY
+0126                  26     DELAY:
+0126 7E05             27         MOV R6,#5
+0128 7D80             28     DD1:MOV R5,#80H
+012A 7F00             29     DD2:MOV R7,#0
+012C DFFE             30     DD:DJNZ R7,DD
+012E DDFA             31        DJNZ R5,DD2
+0130 DEF6             32       DJNZ R6,DD1
+0132 22               33       RET
+0133                  34     TAB1:
+0133 0206040C         35             DB 02H,06H,04H,0CH,08H,09H,01H,03H
+0137 08090103                
+                      36     END 
+A51 MACRO ASSEMBLER  A                                                                    06/17/2022 14:44:46 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DD . . . . . . . .  C ADDR   012CH   A   
+DD1. . . . . . . .  C ADDR   0128H   A   
+DD2. . . . . . . .  C ADDR   012AH   A   
+DELAY. . . . . . .  C ADDR   0126H   A   
+FZ1. . . . . . . .  C ADDR   0115H   A   
+KEY. . . . . . . .  C ADDR   0107H   A   
+LOOP . . . . . . .  C ADDR   011EH   A   
+LOOPF. . . . . . .  C ADDR   011DH   A   
+LOOPZ. . . . . . .  C ADDR   0112H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+START. . . . . . .  C ADDR   0100H   A   
+TAB1 . . . . . . .  C ADDR   0133H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
