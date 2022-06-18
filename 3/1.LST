@@ -1,0 +1,83 @@
+C51 COMPILER V9.01   1                                                                     06/18/2022 04:58:32 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE 1
+OBJECT MODULE PLACED IN 1.OBJ
+COMPILER INVOKED BY: F:\Program Files (x86)\keil\C51\BIN\C51.EXE 1.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include "reg51.h"
+   2          #define u8 unsigned char
+   3          #define u16 unsigned int
+   4          
+   5          sbit clock = P2^4;
+   6          sbit ST = P2^5;
+   7          sbit EOC = P2^6;
+   8          sbit OE = P2^7;
+   9          sbit PWM = P3^7;
+  10          
+  11          char ADC,T;
+  12          
+  13          void init_timer(){
+  14   1              ST = 0;
+  15   1              EOC = 0;
+  16   1              OE = 0;
+  17   1              PWM = 0;
+  18   1              TMOD = 0X02;
+  19   1              TH0 = 0X20;
+  20   1              TL0 = 0X00;
+  21   1              IE = 0X82;
+  22   1              TR0 = 1;
+  23   1      }
+  24          
+  25          void timer0() interrupt 1{
+  26   1              clock = !clock; 
+  27   1      }
+  28          
+  29          void delay(){
+  30   1              char i = 5;
+  31   1              while(i--);
+  32   1      }
+  33          void read_adc(){
+  34   1              ST = 1;
+  35   1              delay();
+  36   1              ST = 0;
+  37   1              delay();
+  38   1              while(!EOC);
+  39   1              OE = 1;
+  40   1              delay();
+  41   1              ADC = P1;
+  42   1              OE = 0;
+  43   1              EOC = 0;
+  44   1      }
+  45          
+  46          
+  47          void main(){
+  48   1              init_timer();
+  49   1              while(1){
+  50   2                      read_adc();
+  51   2                      for(T=0X00;T < 0XFF;T++){
+  52   3                              if(T<ADC)
+  53   3                                      PWM = 1;
+  54   3                              else
+  55   3                                      PWM = 0;        
+C51 COMPILER V9.01   1                                                                     06/18/2022 04:58:32 PAGE 2   
+
+  56   3                      }       
+  57   2              }
+  58   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    111    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
